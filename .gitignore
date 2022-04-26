@@ -1,0 +1,5 @@
+# python virtual environment
+.simple-blockchain-venv
+
+# nodejs
+node_modules
