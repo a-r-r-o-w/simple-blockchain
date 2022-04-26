@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Simple Blockchain</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/sha256.js"></script>
+    <script type="text/javascript" src="/static/js/script.js"></script>
+    <link type="text/css" rel="stylesheet" href="/static/css/tailwind-styles.css">
+  </head>
+
+  <body class="bg-gray-100 font-mono">
+    <div>
+      <div>
+        <nav>
+          <a href="/hash">
+            <span>hash</span>
+          </a>
+          <a href="/block">
+            <span>block</span>
+          </a>
+          <a href="/blockchain">
+            <span>blockchain</span>
+          </a>
+        </nav>
+      </div>
+
+      <div class="flex justify-center items-center">
+        {% block hash %}{% endblock hash %}
+        {% block block %}{% endblock block %}
+        {% block blockchain %}{% endblock blockchain %}
+      </div>
+    </div>
+  </body>
+</html>
