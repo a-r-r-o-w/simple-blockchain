@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .blockchain-container {
+    @apply m-2 p-4 h-max w-max rounded-lg overflow-hidden bg-yellow-50 flex flex-col gap-6 text-center justify-center font-bold
+  }
+
+  .blockchain-container span {
+    @apply text-4xl
+  }
+
+  .blockchain-container__element {
+    @apply p-1 border-2 border-solid border-black bg-yellow-100 text-lg rounded-lg overflow-hidden shadow-md hover:shadow-xl flex flex-col
+  }
+
+  .blockchain-container__element label {
+    @apply m-1 rounded-lg overflow-hidden
+  }
+
+  .blockchain-container__element textarea {
+    @apply text-center bg-blue-100 rounded-lg overflow-hidden
+  }
+}
