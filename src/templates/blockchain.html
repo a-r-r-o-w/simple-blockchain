@@ -1,5 +1,21 @@
 {% extends 'base.html' %}
 
 {% block blockchain %}
-implement blockchain
+<div>
+  <div class="blockchain-header">
+    <a href="/blockchain">
+      <span>Blockchain</span>
+    </a>
+  </div>
+
+  <div id="blockchain-container" class="blockchain-container">
+    <script>
+      const blockchain_container = document.getElementById('blockchain-container');
+      const blockchain = new Blockchain();
+      blockchain.add('', blockchain_container);
+      blockchain.add('', blockchain_container);
+      // blockchain.add('', blockchain_container);
+    </script>
+  </div>
+</div>
 {% endblock blockchain %}

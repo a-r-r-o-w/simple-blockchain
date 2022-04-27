@@ -1,5 +1,10 @@
 module.exports = {
   content: ["../../templates/*.{html,js}"],
+  safelist: [
+    {
+      pattern: /^blockchain/
+    }
+  ],
   presets: [],
   darkMode: 'media', // or 'class'
   theme: {

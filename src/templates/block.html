@@ -1,87 +1,19 @@
 {% extends 'base.html' %}
 
 {% block block %}
-  <div id="blockchain-container" class="blockchain-container">
+<div>
+  <div class="blockchain-header">
     <a href="/block">
       <span>Block</span>
     </a>
-    <div class="blockchain-container__element">
-      <label for="blockchain__block-number">block number</label>
-      <textarea id="blockchain__block-number" class="blockchain-container__input" cols="64" autofocus="true" wrap="soft"></textarea>
-    </div>
-    <div class="blockchain-container__element">
-      <label for="blockchain__nonce">nonce</label>
-      <textarea id="blockchain__nonce" class="blockchain-container__input" cols="64" autofocus="true" wrap="soft"></textarea>
-    </div>
-    <div class="blockchain-container__element">
-      <label for="blockchain__data">data</label>
-      <textarea id="blockchain__data" class="blockchain-container__input" rows="4" cols="64" autofocus="true" wrap="soft"></textarea>
-    </div>
-    <div class="blockchain-container__element">
-      <label for="blockchain__previous-block-hash">previous block hash</label>
-      <textarea id="blockchain__previous-block-hash" class="blockchain-container__input" cols="64" autofocus="true" wrap="soft"></textarea>
-    </div>
-    <div class="blockchain-container__element">
-      <label for="blockchain__block-hash">block hash</label>
-      <textarea id="blockchain__block-hash" class="blockchain-container__output" cols="64" disabled="true"></textarea>
-    </div>
-    <button id="blockchain__mine">mine</button>
   </div>
 
-  <script>
-    const blockchain__block_number = document.getElementById('blockchain__block-number');
-    const blockchain__nonce = document.getElementById('blockchain__nonce');
-    const blockchain__data = document.getElementById('blockchain__data');
-    const blockchain__previous_block_hash = document.getElementById('blockchain__previous-block-hash');
-    const blockchain__block_hash = document.getElementById('blockchain__block-hash');
-    const blockchain__mine = document.getElementById('blockchain__mine');
-    
-    blockchain__block_number.textContent = '1';
-    blockchain__nonce.textContent = '0';
-    blockchain__previous_block_hash.textContent = String(0).repeat(64);
-    
-    const block = new Block(
-      Number(blockchain__block_number.textContent),
-      Number(blockchain__nonce.textContent),
-      blockchain__data.textContent,
-      blockchain__previous_block_hash.textContent
-    );
-
-    blockchain__block_hash.textContent = block.toHash();
-
-    const update = (event) => {
-      let value = event.target.value;
-
-      switch (event.target.id) {
-        case 'blockchain__block-number':
-          block.block_number = Number(value);
-          break;
-        case 'blockchain__nonce':
-          block.nonce = Number(value);
-          break;
-        case 'blockchain__data':
-          block.data = value;
-          break;
-        case 'blockchain__previous-block-hash':
-          block.previous_block_hash = value;
-          break;
-      }
-
-      blockchain__block_hash.textContent = block.toHash();
-    };
-
-    let block_elements = [blockchain__block_number, blockchain__nonce, blockchain__data, blockchain__previous_block_hash];
-    for (let i = 0; i < block_elements.length; ++i) {
-      block_elements[i].addEventListener('input', update);
-      block_elements[i].addEventListener('propertychange', update);
-    }
-
-    const mine = (event) => {
-      block.mine(4);
-      blockchain__nonce.textContent = block.nonce;
-      blockchain__block_hash.textContent = block.toHash();
-    };
-
-    blockchain__mine.addEventListener('click', mine);
-  </script>
+  <div id="blockchain-container" class="blockchain-container">
+    <script>
+      const blockchain_container = document.getElementById('blockchain-container');
+      const blockchain = new Blockchain();
+      blockchain.add('', blockchain_container);
+    </script>
+  </div>
+</div>
 {% endblock block %}

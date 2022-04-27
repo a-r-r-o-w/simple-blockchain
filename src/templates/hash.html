@@ -1,17 +1,20 @@
 {% extends 'base.html' %}
 
 {% block hash %}
-  <div id="blockchain-container" class="blockchain-container">
+<div>
+  <div class="blockchain-header">
     <a href="/href">
       <span>Hash</span>
     </a>
-    <div class="blockchain-container__element">
+  </div>
+  <div id="blockchain-container" class="blockchain-container blockchain-block">
+    <div class="blockchain-block__element">
       <label for="blockchain__data">data</label>
-      <textarea id="blockchain__data" class="blockchain-container__input" cols="64" autofocus="true" wrap="soft"></textarea>
+      <textarea id="blockchain__data" class="blockchain-block__input" rows="4" cols="64" autofocus="true" wrap="soft"></textarea>
     </div>
-    <div class="blockchain-container__element">
+    <div class="blockchain-block__element">
       <label for="blockchain__sha256">sha-256</label>
-      <textarea id="blockchain__sha256" class="blockchain-container__output" cols="64" disabled="true"></textarea>
+      <textarea id="blockchain__sha256" class="blockchain-block__output" rows="1" cols="64" disabled="true"></textarea>
     </div>
   </div>
 
@@ -28,4 +31,5 @@
     blockchain__data.addEventListener('input', update);
     blockchain__data.addEventListener('propertychange', update);
   </script>
+</div>
 {% endblock hash %}
