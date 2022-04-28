@@ -1,20 +1,30 @@
 {% extends 'base.html' %}
 
 {% block blockchain %}
-<div>
+<div class="absolute w-full">
+  <style>
+    /* https://stackoverflow.com/questions/66416614/how-to-create-scrollable-element-in-tailwind-without-a-scrollbar */
+    
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+  </style>
   <div class="blockchain-header">
     <a href="/blockchain">
       <span>Blockchain</span>
     </a>
   </div>
 
-  <div id="blockchain-container" class="blockchain-container">
+  <div id="blockchain-container" class="blockchain-container no-scrollbar">
     <script>
       const blockchain_container = document.getElementById('blockchain-container');
       const blockchain = new Blockchain();
-      blockchain.add('', blockchain_container);
-      blockchain.add('', blockchain_container);
-      // blockchain.add('', blockchain_container);
+      blockchain.add('', blockchain_container, true);
     </script>
   </div>
 </div>

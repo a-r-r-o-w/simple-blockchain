@@ -22,7 +22,8 @@ class Block {
       previous_block_hash: `blockchain__previous-block-hash-${this.block_number}`,
       block_hash: `blockchain__block-hash-${this.block_number}`,
       difficulty: `blockchain__difficulty-${this.block_number}`,
-      mine: `blockchain__mine-${this.block_number}`
+      mine: `blockchain__mine-${this.block_number}`,
+      add_button: `blockchain__add-${this.block_number}`
     };
     this.htmlElement = {
       block_number: null,
@@ -31,7 +32,8 @@ class Block {
       previous_block_hash: null,
       block_hash: null,
       difficulty: null,
-      mine: null
+      mine: null,
+      add_button: null
     };
     this.update = this.update.bind(this);
     this.register = this.register.bind(this);
@@ -50,7 +52,7 @@ class Block {
     return hash(this.toString());
   }
 
-  toHTML () {
+  toHTML (add_button) {
     return `
     <div id="blockchain-block-${this.block_number}" class="blockchain-block">
       <div class="blockchain-block__element">
@@ -77,7 +79,10 @@ class Block {
         <label for="${this.htmlID.difficulty}">difficulty</label>
         <textarea id="${this.htmlID.difficulty}" class="blockchain-block__input" rows="1" cols="8" wrap="soft">${this.difficulty}</textarea>
       </div>
-      <button id="${this.htmlID.mine}">mine</button>
+      <div class="blockchain-block__buttons">
+        <button id="${this.htmlID.mine}" class="blockchain-block__button-mine">mine</button>
+        ${add_button ? `<button id="${this.htmlID.add_button}" class="blockchain-block__button-add">add</button>` : ''}
+      </div>
     </div>
     `
   }
@@ -98,6 +103,7 @@ class Block {
 
     this.htmlElement.nonce.textContent = this.nonce;
     this.htmlElement.block_hash.textContent = this.toHash();
+    this.chain_update(this);
   }
 
   update (event) {
@@ -115,11 +121,17 @@ class Block {
     }
 
     this.htmlElement.block_hash.textContent = this.toHash();
+    this.chain_update(this);
   }
 
-  register (element) {
+  render_update () {
+    this.htmlElement.previous_block_hash.textContent = this.previous_block_hash;
+    this.htmlElement.block_hash.textContent = this.toHash();
+  }
+
+  register (element, add_button) {
     const div = document.createElement('div')
-    div.innerHTML = this.toHTML();
+    div.innerHTML = this.toHTML(add_button);
     element.appendChild(div);
 
     this.htmlElement.block_number = document.getElementById(`blockchain__block-number-${this.block_number}`);
@@ -129,29 +141,54 @@ class Block {
     this.htmlElement.block_hash = document.getElementById(`blockchain__block-hash-${this.block_number}`);
     this.htmlElement.difficulty = document.getElementById(`blockchain__difficulty-${this.block_number}`);
     this.htmlElement.mine = document.getElementById(`blockchain__mine-${this.block_number}`);
+    this.htmlElement.add_block = document.getElementById(`blockchain__add-${this.block_number}`);
 
     this.htmlElement.block_number.addEventListener('input', this.update);
     this.htmlElement.nonce.addEventListener('input', this.update);
     this.htmlElement.data.addEventListener('input', this.update);
     this.htmlElement.difficulty.addEventListener('input', this.update);
     this.htmlElement.mine.addEventListener('click', this.mine);
+    this.htmlElement.add_block.addEventListener('click', this.add_block);
   }
 };
 
 class Blockchain {
   constructor () {
     this.chain = []
+    this.chain_update = this.chain_update.bind(this);
+    this.add = this.add.bind(this);
+    this.add_block = this.add_block.bind(this);
   }
 
-  add (data, container) {
+  add_block () {
+    this.add('', document.getElementById('blockchain-container'), true);
+  }
+
+  add (data, container, add_button) {
     if (this.chain.length === 0) {
-      this.chain.push(new Block(this.chain.length + 1, 0, data, String(0).repeat(64), 4));
-      this.chain[this.chain.length - 1].register(container);
+      const block = new Block(this.chain.length + 1, 0, data, String(0).repeat(64), 4);
+      block.chain_update = this.chain_update;
+      block.add_block = this.add_block;
+      block.register(container, add_button);
+      this.chain.push(block);
     }
     else {
       const previous_block = this.chain[this.chain.length - 1];
-      this.chain.push(new Block(this.chain.length + 1, 0, data, previous_block.toHash(), 4));
-      this.chain[this.chain.length - 1].register(container);
+      const block = new Block(this.chain.length + 1, 0, data, previous_block.toHash(), 4);
+      block.chain_update = this.chain_update;
+      block.add_block = this.add_block;
+      block.register(container, add_button);
+      this.chain.push(block);
+    }
+  }
+
+  chain_update (block) {
+    let index = block.block_number;
+    while (index < this.chain.length) {
+      this.chain[index].previous_block_hash = this.chain[index - 1].toHash();
+      this.chain[index].block_hash = this.chain[index].toHash();
+      this.chain[index].render_update();
+      index += 1;
     }
   }
 };
